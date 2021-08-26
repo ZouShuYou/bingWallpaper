@@ -1,13 +1,12 @@
 package main
 
 import (
+	"bingWallpaper/bing"
 	"bingWallpaper/constant"
-	"bingWallpaper/util"
-	"bingWallpaper/wallpaper"
 	"flag"
-	"fmt"
-	"runtime"
 	"github.com/kardianos/service"
+	"log"
+	"runtime"
 )
 
 var (
@@ -33,12 +32,19 @@ func init()  {
 func main() {
 	serviceConfig := &service.Config{
 		Name:        "bingWallpaper",
-		DisplayName: "bingWallpaper service",
+		DisplayName: "bing Wallpaper service",
 		Description: "每日同步微软bing壁纸",
 	}
 
+	prg := &bing.Program{}
+
+	s, err := service.New(prg, serviceConfig)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	if version {
-		fmt.Printf("bingWallpaper %s on %s %s with %s %s\n", constant.Version, runtime.GOOS, runtime.GOARCH, runtime.Version(), constant.BuildTime)
+		log.Printf("bingWallpaper %s on %s %s with %s %s\n", constant.Version, runtime.GOOS, runtime.GOARCH, runtime.Version(), constant.BuildTime)
 		return
 	}
 
@@ -46,6 +52,12 @@ func main() {
 		flag.PrintDefaults()
 	}
 
-	imagePath, _ := wallpaper.FetchAndWrite()
-	util.SetWindowsWallpaper(imagePath)
+	if start {
+		s.Start()
+	}
+
+	if stop {
+		s.Stop()
+	}
+
 }

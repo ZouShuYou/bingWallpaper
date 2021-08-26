@@ -2,6 +2,7 @@ package wallpaper
 
 import (
 	"bingWallpaper/util"
+	"bingWallpaper/constant"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -12,8 +13,7 @@ import (
 )
 
 const (
-	imgUrl = "https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=8"
-	bingUrl = "https://cn.bing.com"
+
 )
 
 type Wallpaper struct {
@@ -28,7 +28,7 @@ type BingWallpaperResult struct {
 
 //获取图片json信息
 func GetImageInfo() (*BingWallpaperResult, error){
-	resp, err := http.Get(imgUrl)
+	resp, err := http.Get(constant.ImgUrl)
 	if err != nil {
 		return nil,err
 	}
@@ -51,7 +51,7 @@ func GetImageInfo() (*BingWallpaperResult, error){
 func FetchAndWrite() (string,error){
 	wallpaperResult, _ := GetImageInfo()
 	image := wallpaperResult.Images[0]
-	url := bingUrl + image.Url
+	url := constant.BingUrl + image.Url
 	resp, err := http.Get(url)
 	if err != nil {
 		return "",err
