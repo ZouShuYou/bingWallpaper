@@ -53,7 +53,7 @@ func main() {
 	}
 
 	if start {
-		s.Start()
+		s.Run()
 	}
 
 	if stop {

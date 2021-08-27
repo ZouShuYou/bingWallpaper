@@ -26,6 +26,10 @@ func (p *Program) Start(s service.Service) error  {
 }
 
 func (p *Program) run() {
+	log.Printf("Bing Wallpaper Service is running......")
+	imagePath, _ := wallpaper.FetchAndWrite()
+	log.Printf("get wallpaper and save in %s",imagePath)
+	util.SetWindowsWallpaper(imagePath)
 	ticker := time.NewTicker(24 * time.Hour)
 	for  {
 		select {
