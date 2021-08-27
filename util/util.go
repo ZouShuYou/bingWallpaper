@@ -6,14 +6,11 @@ import (
 	"path"
 	"syscall"
 	"unsafe"
-)
-
-const (
-	bingDir = "C:/Users/11411/Pictures/Bing"
+	"bingWallpaper/constant"
 )
 
 func MakeDir(data string) (string,error) {
-	dir := path.Join(bingDir,data)
+	dir := path.Join(constant.BingDir,data)
 	err := os.MkdirAll(dir, os.ModePerm)
 	if err != nil {
 		return "", err

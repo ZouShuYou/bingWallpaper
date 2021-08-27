@@ -1,6 +1,7 @@
 package bing
 
 import (
+	"bingWallpaper/constant"
 	"bingWallpaper/util"
 	"bingWallpaper/wallpaper"
 	"github.com/kardianos/service"
@@ -8,10 +9,10 @@ import (
 	"time"
 )
 
-var logger service.Logger
 
 type Program struct{
-	exit chan struct{}
+	exit    chan struct{}
+	Service service.Service
 }
 
 func (p *Program) Start(s service.Service) error  {
@@ -30,7 +31,7 @@ func (p *Program) run() {
 	imagePath, _ := wallpaper.FetchAndWrite()
 	log.Printf("get wallpaper and save in %s",imagePath)
 	util.SetWindowsWallpaper(imagePath)
-	ticker := time.NewTicker(24 * time.Hour)
+	ticker := time.NewTicker(constant.Time)
 	for  {
 		select {
 		case tm := <- ticker.C:
