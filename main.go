@@ -3,9 +3,9 @@ package main
 import (
 	"bingWallpaper/bing"
 	"bingWallpaper/constant"
+	"bingWallpaper/util"
 	"flag"
 	"github.com/kardianos/service"
-	"log"
 	"runtime"
 )
 
@@ -34,14 +34,17 @@ func init()  {
 }
 
 func main() {
-	Arguments := []string{"-run"}
+	arguments := []string{"-run"}
+	option := make(service.KeyValue)
+	option["Interactive"] = true
 
 	serviceConfig := &service.Config{
 		Name:        	"BingWallpaper",
 		DisplayName: 	"Bing Wallpaper Service",
 		Description: 	"每日同步微软bing壁纸",
 		Executable: 	constant.Executable,
-		Arguments:		Arguments,
+		Arguments:		arguments,
+		Option: 		option,
 	}
 
 	prg := &bing.Program{}
@@ -49,11 +52,11 @@ func main() {
 	prg.Service = s
 
 	if err != nil {
-		log.Fatal(err)
+		util.Info.Fatal(err)
 	}
 
 	if version {
-		log.Printf("bingWallpaper %s on %s %s with %s %s\n", constant.Version, runtime.GOOS, runtime.GOARCH, runtime.Version(), constant.BuildTime)
+		util.Info.Printf("bingWallpaper %s on %s %s with %s %s\n", constant.Version, runtime.GOOS, runtime.GOARCH, runtime.Version(), constant.BuildTime)
 		return
 	}
 

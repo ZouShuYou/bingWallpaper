@@ -27,17 +27,20 @@ func (p *Program) Start(s service.Service) error  {
 }
 
 func (p *Program) run() {
-	log.Printf("Bing Wallpaper Service is running......")
+	util.Info.Println("Bing Wallpaper Service is running......")
 	imagePath, _ := wallpaper.FetchAndWrite()
-	log.Printf("get wallpaper and save in %s",imagePath)
-	util.SetWindowsWallpaper(imagePath)
+	util.Info.Printf("get wallpaper and save in %s",imagePath)
+	err := util.SetWindowsWallpaper(imagePath)
+	if err != nil {
+		util.Error.Println(err.Error())
+	}
 	ticker := time.NewTicker(constant.Time)
 	for  {
 		select {
 		case tm := <- ticker.C:
-			log.Printf("Bing Wallpaper Service is still running at %v",tm)
+			util.Info.Printf("Bing Wallpaper Service is still running at %v",tm)
 			imagePath, _ := wallpaper.FetchAndWrite()
-			log.Printf("get wallpaper and save in %s",imagePath)
+			util.Info.Printf("get wallpaper and save in %s",imagePath)
 			util.SetWindowsWallpaper(imagePath)
 		case <-p.exit:
 			ticker.Stop()
